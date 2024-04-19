@@ -20,6 +20,7 @@ count_msg = "Items on the todo list: {t}. "
 nothing_msg = "You have nothing to do here. "
 display_msg = "Here is your todo list: "
 goodbye_msg = "Bye!"
+viewer_mode_msg = "Viewer mode. Relaunch and enter the valid password to edit."
 
 # commands
 edit = "edit"
@@ -31,12 +32,14 @@ display = "display"
 
 #labels
 enter = "Enter todo"
+password = "Enter password"
 
 #buttons
 edit_button = "Edit"
 add_button = "Add"
 complete_button = "Complete"
 exit_button = "Exit"
+enter_button = "Enter"
 
 #headlines
 editor_head = "To-Do List: Editor mode"
