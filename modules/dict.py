@@ -29,3 +29,15 @@ exit_ = "exit"
 show = "show"
 display = "display"
 
+#labels
+enter = "Enter todo"
+
+#buttons
+edit_button = "Edit"
+add_button = "Add"
+complete_button = "Complete"
+exit_button = "Exit"
+
+#headlines
+editor_head = "To-Do List: Editor mode"
+
