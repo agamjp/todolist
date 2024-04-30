@@ -21,7 +21,7 @@ nothing_msg = "You have nothing to do here. "
 display_msg = "Here is your todo list: "
 goodbye_msg = "Bye!"
 viewer_mode_msg = "Viewer mode. \nRelaunch and enter the valid password to edit."
-select_msg = "Select a todo to edit or complete!"
+select_msg = "Select a todo first!"
 
 # commands
 edit = "edit"
@@ -41,6 +41,8 @@ add_button = "Add"
 complete_button = "Complete"
 exit_button = "Exit"
 enter_button = "Enter"
+remove_button = "Remove completed"
+mark_button = "Mark as completed"
 
 #headlines
 editor_head = "To-Do List: Editor mode"
