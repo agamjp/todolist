@@ -20,7 +20,8 @@ count_msg = "Items on the todo list: {t}. "
 nothing_msg = "You have nothing to do here. "
 display_msg = "Here is your todo list: "
 goodbye_msg = "Bye!"
-viewer_mode_msg = "Viewer mode. Relaunch and enter the valid password to edit."
+viewer_mode_msg = "Viewer mode. \nRelaunch and enter the valid password to edit."
+select_msg = "Select a todo to edit or complete!"
 
 # commands
 edit = "edit"
