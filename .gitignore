@@ -2,3 +2,5 @@
 /exercises/
 /venv/
 .idea
+/build/
+/dist/
