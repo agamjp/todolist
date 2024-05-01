@@ -7,7 +7,7 @@ start_prompt0 = "Type add or exit: "
 start_prompt1 = "Type add, show, edit, complete or exit: "
 number_prompt0 = "Type number of the todo to {t} (type 0 to display the list): "
 number_prompt1 = "Type number of the todo to {t}: "
-todo_prompt = "Enter the new todo: "
+todo_prompt = "Enter new todo: "
 set_password_prompt = "Set the new editor mode password: "
 
 # messages
