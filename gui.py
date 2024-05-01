@@ -3,6 +3,7 @@ from modules.file_functions import get_todos, write_todos, resource_path
 import PySimpleGUI as sg
 import time
 import os
+import random
 
 if not os.path.exists("todos.txt"):
     with open("todos.txt", "w") as file:
@@ -81,10 +82,12 @@ while True:
             case "Add":
                 todolist = get_todos()
                 if values['todo'] == "":
-                    new_todo = dict.typein
+                    sg.popup(dict.no_empty_msg)
+                    # chores = get_todos("chores.txt") - won't work in .exe
+                    # new_todo = random.choice(chores) + '\n'
                 else:
                     new_todo = values['todo'].capitalize() + '\n'
-                todolist.append(new_todo)
+                    todolist.append(new_todo)
                 write_todos(todolist)
                 window['todos'].update(values=todolist)
             case "Edit":
