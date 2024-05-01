@@ -41,21 +41,12 @@ def set_password(filepath="password.txt"):
         event, values = window_set.read()
         match event:
             case "Set":
-                try:
-                    if values["current_password"] == password:
-                        if values["password"] == values["password1"]:
-                            with open(filepath, "w") as file:
-                                file.write(values["password"])
-                            break
-                        else:
-                            window_set["match"].update(dict.match_msg)
-                            window_set["wrong"].update("")
-                    else:
-                        window_set["wrong"].update(dict.wrong_password_msg)
-                except KeyError:
+                if values["password"] == values["password1"]:
                     with open(filepath, "w") as file:
                         file.write(values["password"])
                     break
+                else:
+                    window_set["match"].update(dict.match_msg)
             case "Cancel" | sg.WIN_CLOSED:
                 break
     window_set.close()
