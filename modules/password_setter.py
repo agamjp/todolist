@@ -4,13 +4,13 @@ import os
 
 label_pswrd = sg.Text(dict.password_prompt)
 input_pswrd = sg.InputText(tooltip=dict.password, key="current_password", password_char='*')
-wrong_label = sg.Text("", colors="red", key="wrong")
+wrong_label = sg.Text("", text_color="red", key="wrong")
 
 label0_set = sg.Text(dict.set_password_prompt)
 input_box_set = sg.InputText(tooltip=dict.password, key="password", password_char='*')
 input_box_set1 = sg.InputText(tooltip=dict.password, key="password1", password_char='*')
 enter_button_set = sg.Button(dict.set_button)
-match_label = sg.Text("", colors="red", key="match")
+match_label = sg.Text("", text_color="red", key="match")
 cancel_button_set = sg.Button(dict.cancel_button)
 
 if os.path.exists("password.txt"):
