@@ -26,6 +26,7 @@ viewer_mode_msg = "Viewer mode. \n" \
                   "Relaunch and enter the valid password \nto edit, add or remove todos."
 select_msg = "Select a todo first!"
 match_msg = "Passwords do not match."
+no_empty_msg = "The todo must not be empty."
 
 # commands
 edit = "edit"
@@ -53,4 +54,7 @@ cancel_button = "Cancel"
 
 #headlines
 editor_head = "To-Do List: Editor mode"
+
+#autofill
+typein = "Type in a todo\n"
 

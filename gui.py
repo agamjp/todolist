@@ -79,7 +79,10 @@ while True:
     match event:
         case "Add":
             todolist = get_todos()
-            new_todo = values['todo'].capitalize() + '\n'
+            if values['todo'] == "":
+                new_todo = dict.typein
+            else:
+                new_todo = values['todo'].capitalize() + '\n'
             todolist.append(new_todo)
             write_todos(todolist)
             window['todos'].update(values=todolist)
@@ -89,7 +92,10 @@ while True:
                 todolist = get_todos()
                 indexes = list_box.get_indexes()
                 index = indexes[0]
-                todolist[index] = new_todo
+                if new_todo != "\n":
+                    todolist[index] = new_todo
+                else:
+                    sg.popup(dict.no_empty_msg)
                 write_todos(todolist)
                 window['todos'].update(values=todolist)
             except IndexError:
