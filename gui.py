@@ -75,80 +75,83 @@ window = sg.Window(dict.editor_head,
 while True:
     event, values = window.read(timeout=200)
     print(event, values)
-    window['clock'].update(value="Today is " + time.strftime("%A, %B %d, %Y %H:%M:%S"))
-    match event:
-        case "Add":
-            todolist = get_todos()
-            if values['todo'] == "":
-                new_todo = dict.typein
-            else:
-                new_todo = values['todo'].capitalize() + '\n'
-            todolist.append(new_todo)
-            write_todos(todolist)
-            window['todos'].update(values=todolist)
-        case "Edit":
-            try:
-                new_todo = values['todo'].capitalize() + '\n'
+    if values is not None:
+        window['clock'].update(value="Today is " + time.strftime("%A, %B %d, %Y %H:%M:%S"))
+        match event:
+            case "Add":
                 todolist = get_todos()
-                indexes = list_box.get_indexes()
-                index = indexes[0]
-                if new_todo != "\n":
-                    todolist[index] = new_todo
+                if values['todo'] == "":
+                    new_todo = dict.typein
                 else:
-                    sg.popup(dict.no_empty_msg)
+                    new_todo = values['todo'].capitalize() + '\n'
+                todolist.append(new_todo)
                 write_todos(todolist)
                 window['todos'].update(values=todolist)
-            except IndexError:
-                window["select"].update(value=dict.select_msg)
-                # another option: sg.popup(dict.select_msg, font=('GeorgiaPro', 20)
-                # (also for Complete/Mark as completed)
-                continue
-        case "Complete":
-            try:
+            case "Edit":
+                try:
+                    new_todo = values['todo'].capitalize() + '\n'
+                    todolist = get_todos()
+                    indexes = list_box.get_indexes()
+                    index = indexes[0]
+                    if new_todo != "\n":
+                        todolist[index] = new_todo
+                    else:
+                        sg.popup(dict.no_empty_msg)
+                    write_todos(todolist)
+                    window['todos'].update(values=todolist)
+                except IndexError:
+                    window["select"].update(value=dict.select_msg)
+                    # another option: sg.popup(dict.select_msg, font=('GeorgiaPro', 20)
+                    # (also for Complete/Mark as completed)
+                    continue
+            case "Complete":
+                try:
+                    todolist = get_todos()
+                    indexes = list_box.get_indexes()
+                    index = indexes[0]
+                    todolist.pop(index)
+                    write_todos(todolist)
+                    window['todos'].update(values=todolist)
+                    window['todo'].update(value='')
+                except IndexError:
+                    window["select"].update(value=dict.select_msg)
+                    continue
+            case "Mark as completed":
+                try:
+                    new_todo = values['todo'].capitalize() + ' - COMPLETED\n'
+                    todolist = get_todos()
+                    indexes = list_box.get_indexes()
+                    index = indexes[0]
+                    if '- COMPLETED' not in todolist[index]:
+                        todolist[index] = new_todo
+                    write_todos(todolist)
+                    window['todos'].update(values=todolist)
+                    window['todo'].update(value='')
+                except IndexError:
+                    window["select"].update(value=dict.select_msg)
+                    continue
+            case 'Remove completed':
                 todolist = get_todos()
-                indexes = list_box.get_indexes()
-                index = indexes[0]
-                todolist.pop(index)
+                to_remove = []
+                for t in todolist:
+                    if '- COMPLETED' in t:
+                        to_remove.append(t)
+                for i in to_remove:
+                    todolist.remove(i)
                 write_todos(todolist)
                 window['todos'].update(values=todolist)
-                window['todo'].update(value='')
-            except IndexError:
-                window["select"].update(value=dict.select_msg)
-                continue
-        case "Mark as completed":
-            try:
-                new_todo = values['todo'].capitalize() + ' - COMPLETED\n'
-                todolist = get_todos()
-                indexes = list_box.get_indexes()
-                index = indexes[0]
-                if '- COMPLETED' not in todolist[index]:
-                    todolist[index] = new_todo
-                write_todos(todolist)
-                window['todos'].update(values=todolist)
-                window['todo'].update(value='')
-            except IndexError:
-                window["select"].update(value=dict.select_msg)
-                continue
-        case 'Remove completed':
-            todolist = get_todos()
-            to_remove = []
-            for t in todolist:
-                if '- COMPLETED' in t:
-                    to_remove.append(t)
-            for i in to_remove:
-                todolist.remove(i)
-            write_todos(todolist)
-            window['todos'].update(values=todolist)
-        # case "Change password":
-            # password_setter.set_password()
-    # needs debugging (change password window opens only once)
-        case 'todos':
-            window["select"].update(value="")
-            try:
-                window['todo'].update(value=values['todos'][0].strip('\n'))
-            except IndexError:
-                sg.popup(dict.no_todos_msg)
-        case "Exit" | sg.WIN_CLOSED:
-            break
+            # case "Change password":
+                # password_setter.set_password()
+        # needs debugging (change password window opens only once)
+            case 'todos':
+                window["select"].update(value="")
+                try:
+                    window['todo'].update(value=values['todos'][0].strip('\n'))
+                except IndexError:
+                    sg.popup(dict.no_todos_msg)
+            case "Exit" | sg.WIN_CLOSED:
+                break
+    else:
+        break
 print("Bye")
 window.close()
