@@ -8,6 +8,7 @@ start_prompt1 = "Type add, show, edit, complete or exit: "
 number_prompt0 = "Type number of the todo to {t} (type 0 to display the list): "
 number_prompt1 = "Type number of the todo to {t}: "
 todo_prompt = "Enter the new todo: "
+set_password_prompt = "Set the new editor mode password: "
 
 # messages
 greeting_msg = "Hello!"
@@ -20,8 +21,10 @@ count_msg = "Items on the todo list: {t}. "
 nothing_msg = "You have nothing to do here. "
 display_msg = "Here is your todo list: "
 goodbye_msg = "Bye!"
-viewer_mode_msg = "Viewer mode. \nRelaunch and enter the valid password to edit."
+viewer_mode_msg = "Viewer mode. \n" \
+                  "Relaunch and enter the valid password \nto edit, add or remove todos."
 select_msg = "Select a todo first!"
+match_msg = "Passwords do not match."
 
 # commands
 edit = "edit"
@@ -43,6 +46,9 @@ exit_button = "Exit"
 enter_button = "Enter"
 remove_button = "Remove completed"
 mark_button = "Mark as completed"
+set_button = "Set"
+change_pswrd_button = "Change password"
+cancel_button = "Cancel"
 
 #headlines
 editor_head = "To-Do List: Editor mode"

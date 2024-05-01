@@ -1,24 +1,36 @@
-from modules import dict, todolist_functions as tdf
+from modules import dict, todolist_functions as tdf, password_setter
 from modules.file_functions import get_todos, write_todos
 import PySimpleGUI as sg
 import time
+import os
+
+if not os.path.exists("todos.txt"):
+    with open("todos.txt", "w") as file:
+        pass
 
 sg.theme("BluePurple")
+
+if not os.path.exists("password.txt"):
+    password_setter.set_password()
 
 label0 = sg.Text(dict.password_prompt)
 input_box0 = sg.InputText(tooltip=dict.password, key="password", password_char='*')
 enter_button = sg.Button(dict.enter_button)
 
 clock = sg.Text('', key='clock')
-add_button = sg.Button(dict.add_button)
+add_button = sg.Button(key=dict.add_button, size=3, image_source="add.png",
+                       button_color=sg.theme_background_color(), tooltip="Add Todo")
 
 list_box = sg.Listbox(values=get_todos(), key='todos', enable_events=True, size=(45, 10))
 edit_button = sg.Button(dict.edit_button)
 complete_button = sg.Button(dict.complete_button)
-mark_completed_button = sg.Button(dict.mark_button)
+mark_completed_button = sg.Button(key=dict.mark_button, size=3, image_source="complete.png",
+                                  button_color=sg.theme_background_color(),
+                                  tooltip="Mark as completed")
 label_select = sg.Text(key="select", text_color="red")
 
 remove_button = sg.Button(dict.remove_button)
+# change_password_button = sg.Button(dict.change_pswrd_button)
 
 exit_button0 = sg.Button(dict.exit_button)
 exit_button = sg.Button(dict.exit_button)
@@ -43,6 +55,7 @@ match event:
                       [label_select],
                       [list_box, edit_button, complete_button],
                       [remove_button, exit_button]]
+            # add change_password_button when ready
         else:
             input_box = sg.InputText(tooltip=dict.enter, key="todo", readonly=True)
             label = sg.Text(dict.viewer_mode_msg)
@@ -79,7 +92,8 @@ while True:
                 window['todos'].update(values=todolist)
             except IndexError:
                 window["select"].update(value=dict.select_msg)
-                # another option: sg.popup(dict.select_msg, font=('GeorgiaPro', 20))
+                # another option: sg.popup(dict.select_msg, font=('GeorgiaPro', 20)
+                # (also for Complete/Mark as completed)
                 continue
         case "Complete":
             try:
@@ -92,7 +106,6 @@ while True:
                 window['todo'].update(value='')
             except IndexError:
                 window["select"].update(value=dict.select_msg)
-                # another option: sg.popup(dict.select_msg, font=('GeorgiaPro', 20))
                 continue
         case "Mark as completed":
             try:
@@ -107,15 +120,20 @@ while True:
                 window['todo'].update(value='')
             except IndexError:
                 window["select"].update(value=dict.select_msg)
-                # another option: sg.popup(dict.select_msg, font=('GeorgiaPro', 20))
                 continue
         case 'Remove completed':
             todolist = get_todos()
+            to_remove = []
             for t in todolist:
                 if '- COMPLETED' in t:
-                    todolist.remove(t)
-                    write_todos(todolist)
+                    to_remove.append(t)
+            for i in to_remove:
+                todolist.remove(i)
+            write_todos(todolist)
             window['todos'].update(values=todolist)
+        # case "Change password":
+            # password_setter.set_password()
+    # needs debugging (change password window opens only once)
         case 'todos':
             window["select"].update(value="")
             window['todo'].update(value=values['todos'][0].strip('\n'))
