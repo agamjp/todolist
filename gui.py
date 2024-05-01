@@ -1,5 +1,5 @@
-from modules import dict, todolist_functions as tdf, password_setter
-from modules.file_functions import get_todos, write_todos
+from modules import dict, password_setter
+from modules.file_functions import get_todos, write_todos, resource_path
 import PySimpleGUI as sg
 import time
 import os
@@ -18,13 +18,13 @@ input_box0 = sg.InputText(tooltip=dict.password, key="password", password_char='
 enter_button = sg.Button(dict.enter_button)
 
 clock = sg.Text('', key='clock')
-add_button = sg.Button(key=dict.add_button, size=3, image_source="add.png",
+add_button = sg.Button(key=dict.add_button, size=3, image_source=resource_path("add.png"),
                        button_color=sg.theme_background_color(), tooltip="Add Todo")
 
 list_box = sg.Listbox(values=get_todos(), key='todos', enable_events=True, size=(45, 10))
 edit_button = sg.Button(dict.edit_button)
 complete_button = sg.Button(dict.complete_button)
-mark_completed_button = sg.Button(key=dict.mark_button, size=3, image_source="complete.png",
+mark_completed_button = sg.Button(key=dict.mark_button, size=3, image_source=resource_path("complete.png"),
                                   button_color=sg.theme_background_color(),
                                   tooltip="Mark as completed")
 label_select = sg.Text(key="select", text_color="red")
@@ -74,12 +74,14 @@ window = sg.Window(dict.editor_head,
                    font=('GeorgiaPro', 20))
 while True:
     event, values = window.read(timeout=200)
+    print(event, values)
     window['clock'].update(value="Today is " + time.strftime("%A, %B %d, %Y %H:%M:%S"))
     match event:
         case "Add":
             todolist = get_todos()
-            new_todo = "add " + values['todo']
-            tdf.todolist_add(todolist, new_todo)
+            new_todo = values['todo'].capitalize() + '\n'
+            todolist.append(new_todo)
+            write_todos(todolist)
             window['todos'].update(values=todolist)
         case "Edit":
             try:
@@ -136,7 +138,10 @@ while True:
     # needs debugging (change password window opens only once)
         case 'todos':
             window["select"].update(value="")
-            window['todo'].update(value=values['todos'][0].strip('\n'))
+            try:
+                window['todo'].update(value=values['todos'][0].strip('\n'))
+            except IndexError:
+                sg.popup(dict.no_todos_msg)
         case "Exit" | sg.WIN_CLOSED:
             break
 print("Bye")
