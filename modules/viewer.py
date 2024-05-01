@@ -7,7 +7,7 @@ def todolist_viewer():
     tasklist = get_todos()
     length = len(tasklist)
     while True:
-        print(dict.count_msg)
+        print(dict.count_msg.format(t=length))
         if length == 0:
             print(dict.nothing_msg)
             exit()

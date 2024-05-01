@@ -1,6 +1,0 @@
-reload dishwasher
-clean table
-wash chairs
-wipe countertops
-heat dinner
-repeat
