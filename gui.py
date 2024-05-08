@@ -1,18 +1,17 @@
-from modules import dict, password_setter
+from modules import dict
 from modules.file_functions import get_todos, write_todos, resource_path
 import PySimpleGUI as sg
 import time
 import os
-import random
+from dotenv import load_dotenv
+
+load_dotenv()
 
 if not os.path.exists("todos.txt"):
     with open("todos.txt", "w") as file:
         pass
 
 sg.theme("BluePurple")
-
-if not os.path.exists("password.txt"):
-    password_setter.set_password()
 
 label0 = sg.Text(dict.password_prompt)
 input_box0 = sg.InputText(tooltip=dict.password, key="password", password_char='*')
@@ -36,39 +35,48 @@ remove_button = sg.Button(dict.remove_button)
 exit_button0 = sg.Button(dict.exit_button)
 exit_button = sg.Button(dict.exit_button)
 
-window0 = sg.Window(dict.editor_head,
-                    layout=[[label0], [input_box0, enter_button],
-                            [exit_button0]],
-                    font=('GeorgiaPro', 20))
-event, values = window0.read()
-layout = []
-with open("password.txt", "r") as keyfile:
-    password = keyfile.read()
-user_pass = values['password']
-match event:
-    case "Enter":
-        if user_pass == password:
-            input_box = sg.InputText(tooltip=dict.enter, key="todo")
-            label = sg.Text(dict.todo_prompt)
-            layout = [[clock],
-                      [label],
-                      [input_box, add_button],
-                      [label_select],
-                      [list_box, edit_button, complete_button],
-                      [remove_button, exit_button]]
-            # add change_password_button when ready
-        else:
-            input_box = sg.InputText(tooltip=dict.enter, key="todo", readonly=True)
-            label = sg.Text(dict.viewer_mode_msg)
-            layout = [[clock],
-                      [label],
-                      [input_box, mark_completed_button],
-                      [label_select],
-                      [list_box],
-                      [exit_button]]
-    case "Exit" | sg.WIN_CLOSED:
-        exit("Bye")
-window0.close()
+if os.getenv("PASSWORD") is not None:
+    window0 = sg.Window(dict.editor_head,
+                        layout=[[label0], [input_box0, enter_button],
+                                [exit_button0]],
+                        font=('GeorgiaPro', 20))
+    event, values = window0.read()
+    layout = []
+    password = os.getenv("PASSWORD")
+    user_pass = values['password']
+    match event:
+        case "Enter":
+            if user_pass == password:
+                input_box = sg.InputText(tooltip=dict.enter, key="todo")
+                label = sg.Text(dict.todo_prompt)
+                layout = [[clock],
+                          [label],
+                          [input_box, add_button],
+                          [label_select],
+                          [list_box, edit_button, complete_button],
+                          [remove_button, exit_button]]
+                # add change_password_button when ready
+            else:
+                input_box = sg.InputText(tooltip=dict.enter, key="todo", readonly=True)
+                label = sg.Text(dict.viewer_mode_msg)
+                layout = [[clock],
+                          [label],
+                          [input_box, mark_completed_button],
+                          [label_select],
+                          [list_box],
+                          [exit_button]]
+        case "Exit" | sg.WIN_CLOSED:
+            exit("Bye")
+    window0.close()
+else:
+    input_box = sg.InputText(tooltip=dict.enter, key="todo")
+    label = sg.Text(dict.todo_prompt)
+    layout = [[clock],
+              [label],
+              [input_box, add_button],
+              [label_select],
+              [list_box, edit_button, complete_button],
+              [remove_button, exit_button]]
 
 window = sg.Window(dict.editor_head,
                    layout=layout,
